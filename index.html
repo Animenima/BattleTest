@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+
+<head>
+    <title>Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="main.js"></script>
+
+    <style>
+        #progressContainer {
+            width: 100%;
+            background-color: #ddd;
+        }
+
+        #progressbar {
+            width: 0%;
+            height: 10px;
+            background-color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="progressContainer">
+    <div id="progressbar"></div>
+    </div>
+
+    <button id="battle">BATTLE</button>
+    <button id="stopbattle">STOP BATTLE</button>
+    <button id="heal">HEAL</button>
+    <button id="increasestr">INCREASE STRENGTH</button>
+    <button id="increasedef">INCREASE DEFENCE</button>
+
+    <p id="level">LEVEL: 1</p>
+    <p id="exp">EXP: 0/10</p>
+    <p id="hp">HP: 10/10</p>
+    <p id="str">STR: 0</p>
+    <p id="def">DEF: 0</p>
+    <p id="points">POINTS: 0</p>
+    <p id="coins">COINS: 0</p>
+
+    <br>
+    <br>
+
+    <h1>Monster</h1>
+
+
+    <select id="monsters">
+        <option value="default" id="default">Select A Monster</option>
+        <option value="m1">Monster1</option>
+        <option value="m2">Monster2</option>
+        <option value="m3">Monster3</option>
+        <option value="m4">Monster4</option>
+    </select>
+
+
+    <p id="monsterhp">HP: 0/0</p>
+    <p id="monsteratk">ATK: 0</p>
+    <p id="monsterdef">DEF: 0</p>
+    <p id="monsterexpreward">EXP REWARD: 0</p>
+
+</body>
