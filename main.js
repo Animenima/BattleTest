@@ -68,6 +68,11 @@ $(document).ready(function () {
         },
     }
 
+    let items = {
+        item1: 0,
+        item1equip: 0,
+    }
+
     $("#monsters").change(function () {
         var selectedMonsterKey = $(this).val();
         var selectedMonster = monsters[selectedMonsterKey];
@@ -146,6 +151,29 @@ $(document).ready(function () {
     $("#shop").click(function (){
         $("#shopdialog").dialog("open");
     })
+
+    $("#item1").on("click", function(){
+        items.item1 += 1;
+        if (items.item1 >= 1){
+            $("#item1equip").css("display", "block");
+        }
+        Update();
+    })
+
+    $("#item1equip").on("click", function(){
+        if (items.item1 >= 1){
+            if (items.item1equip >= 1) {
+                alert("Already Equipped!");
+            } else {
+                items.item1equip = 1;
+                state.str += 1;
+                state.def += 1;
+            }
+        } else {
+            alert("You don't have the item yet!");
+        }
+        Update();
+    });
 
     function Update() {
         $("#exp").html("EXP: " + state.exp + "/" + state.expnext);
