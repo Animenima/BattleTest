@@ -139,6 +139,14 @@ $(document).ready(function () {
         }
     })
 
+    $("#inventory").click(function (){
+        $("#inventorydialog").dialog("open");
+    })
+
+    $("#shop").click(function (){
+        $("#shopdialog").dialog("open");
+    })
+
     function Update() {
         $("#exp").html("EXP: " + state.exp + "/" + state.expnext);
         $("#hp").html("HP: " + state.hp + "/" + state.maxhp);

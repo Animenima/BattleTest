@@ -3,8 +3,10 @@
 
 <head>
     <title>Test</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="main.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js" integrity="sha256-sw0iNNXmOJbQhYFuC9OF2kOlD5KQKe1y5lfBn4C9Sjg=" crossorigin="anonymous"></script>
 
     <style>
         #progressContainer {
@@ -18,6 +20,19 @@
             background-color: #000;
         }
     </style>
+
+    <script>
+        $( function() {
+            $("#inventorydialog").dialog({
+                autoOpen: false,
+            });
+        } );
+        $( function() {
+            $("#shopdialog").dialog({
+                autoOpen: false,
+            });
+        } );
+    </script>
 </head>
 
 <body>
@@ -30,6 +45,8 @@
     <button id="heal">HEAL</button>
     <button id="increasestr">INCREASE STRENGTH</button>
     <button id="increasedef">INCREASE DEFENCE</button>
+    <button id="inventory">INVENTORY</button>
+    <button id="shop">SHOP</button>
 
     <p id="level">LEVEL: 1</p>
     <p id="exp">EXP: 0/10</p>
@@ -58,5 +75,13 @@
     <p id="monsteratk">ATK: 0</p>
     <p id="monsterdef">DEF: 0</p>
     <p id="monsterexpreward">EXP REWARD: 0</p>
+
+    <div id="inventorydialog">
+        <p>Inventory</p>
+    </div>
+
+    <div id="shopdialog">
+        <p>Shop</p>
+    </div>
 
 </body>
