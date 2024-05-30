@@ -66,12 +66,21 @@ $(document).ready(function () {
             maxhp: 35,
             coinreward: 10,
         },
+        m5: {
+            str: 0,
+            def: 0,
+            hp: 1,
+            expreward: 1000,
+            maxhp: 1,
+            coinreward: 1000,
+        },
     }
 
     let items = [
         { id: "item1", cost: 0, quantity: 0, equip: 0, strength: 1, defence: 1 },
         { id: "item2", cost: 0, quantity: 0, equip: 0, strength: 2, defence: 2 },
         { id: "item3", cost: 0, quantity: 0, equip: 0, strength: 3, defence: 3 },
+        { id: "item4", cost: 0, quantity: 0, equip: 0, strength: 1000, defence: 1000 },
     ]
 
     let currentlyEquippedItem = null;
@@ -85,6 +94,7 @@ $(document).ready(function () {
         monstertest.expreward = selectedMonster.expreward;
         monstertest.maxhp = selectedMonster.maxhp;
         monstertest.coinreward = selectedMonster.coinreward;
+        StopBattle();
         Update();
     });
     
@@ -101,12 +111,16 @@ $(document).ready(function () {
     let IntervalID;
 
     $("#stopbattle").click(function () {
+        StopBattle();
+    })
+
+    function StopBattle () {
         clearInterval(IntervalID);
         IntervalID = null;
         progress = 0;
         $("#progressbar").css("width", "0%");
         Update();
-    })
+    }
 
     $("#heal").click(function () {
         if (state.hp === state.maxhp) {
