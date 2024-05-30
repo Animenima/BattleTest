@@ -68,10 +68,13 @@ $(document).ready(function () {
         },
     }
 
-    let items = {
-        item1: 0,
-        item1equip: 0,
-    }
+    let items = [
+        { id: "item1", cost: 0, quantity: 0, equip: 0, strength: 1, defence: 1 },
+        { id: "item2", cost: 0, quantity: 0, equip: 0, strength: 2, defence: 2 },
+        { id: "item3", cost: 0, quantity: 0, equip: 0, strength: 3, defence: 3 },
+    ]
+
+    let currentlyEquippedItem = null;
 
     $("#monsters").change(function () {
         var selectedMonsterKey = $(this).val();
@@ -152,27 +155,44 @@ $(document).ready(function () {
         $("#shopdialog").dialog("open");
     })
 
-    $("#item1").on("click", function(){
-        items.item1 += 1;
-        if (items.item1 >= 1){
-            $("#item1equip").css("display", "block");
-        }
-        Update();
-    })
 
-    $("#item1equip").on("click", function(){
-        if (items.item1 >= 1){
-            if (items.item1equip >= 1) {
-                alert("Already Equipped!");
+    //Buy Items
+    items.forEach(function(item, index) {
+        $("#" + item.id).on("click", function() {
+            if (state.coins >= item.cost) {
+                item.quantity += 1;
+                state.coins -= item.cost;
+                if (item.quantity >= 1) {
+                    $("#" + item.id + "equip").css("display", "block");
+                }
+                Update();
             } else {
-                items.item1equip = 1;
-                state.str += 1;
-                state.def += 1;
+                alert("Not Enough Coins!");
+                Update();
             }
-        } else {
-            alert("You don't have the item yet!");
-        }
-        Update();
+        });
+    });
+
+
+    //Equip Items (Needs Work)
+    items.forEach(function(item, index) {
+        $("#" + item.id + "equip").on("click", function() {
+            if (item.quantity >= 1 && item.equip === 0) {
+                if (currentlyEquippedItem) {
+                    currentlyEquippedItem.equip = 0;
+                    state.str -= currentlyEquippedItem.strength;
+                    state.def -= currentlyEquippedItem.defence;
+                }
+                item.equip = 1;
+                state.str += item.strength;
+                state.def += item.defence;
+                currentlyEquippedItem = item;
+                Update();
+            } else if (item.equip === 1) {
+                alert("Already Equipped!");
+                Update();
+            }
+        });
     });
 
     function Update() {
