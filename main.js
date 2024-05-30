@@ -77,13 +77,17 @@ $(document).ready(function () {
     }
 
     let items = [
-        { id: "item1", cost: 0, quantity: 0, equip: 0, strength: 1, defence: 1 },
-        { id: "item2", cost: 0, quantity: 0, equip: 0, strength: 2, defence: 2 },
-        { id: "item3", cost: 0, quantity: 0, equip: 0, strength: 3, defence: 3 },
-        { id: "item4", cost: 0, quantity: 0, equip: 0, strength: 1000, defence: 1000 },
+        { id: "item1", cost: 0, quantity: 0, equip: 0, strength: 1, defence: 1, type: "sword" },
+        { id: "item2", cost: 0, quantity: 0, equip: 0, strength: 2, defence: 2, type: "shield" },
+        { id: "item3", cost: 0, quantity: 0, equip: 0, strength: 3, defence: 3, type: "armor" },
+        { id: "item4", cost: 0, quantity: 0, equip: 0, strength: 1000, defence: 1000, type: "sword" },
     ]
 
-    let currentlyEquippedItem = null;
+    let currentlyEquippedItems = {
+        sword: null,
+        armor: null,
+        shield: null,
+    };
 
     $("#monsters").change(function () {
         var selectedMonsterKey = $(this).val();
@@ -192,15 +196,17 @@ $(document).ready(function () {
     items.forEach(function(item, index) {
         $("#" + item.id + "equip").on("click", function() {
             if (item.quantity >= 1 && item.equip === 0) {
-                if (currentlyEquippedItem) {
-                    currentlyEquippedItem.equip = 0;
-                    state.str -= currentlyEquippedItem.strength;
-                    state.def -= currentlyEquippedItem.defence;
+                // Check currently equipped item of the same type
+                let currentEquipped = currentlyEquippedItems[item.type];
+                if (currentEquipped) {
+                    currentEquipped.equip = 0;
+                    state.str -= currentEquipped.strength;
+                    state.def -= currentEquipped.defence;
                 }
                 item.equip = 1;
                 state.str += item.strength;
                 state.def += item.defence;
-                currentlyEquippedItem = item;
+                currentlyEquippedItems[item.type] = item;
                 Update();
             } else if (item.equip === 1) {
                 alert("Already Equipped!");
