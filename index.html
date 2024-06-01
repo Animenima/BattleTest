@@ -1,7 +1,8 @@
-
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test</title>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -9,79 +10,164 @@
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js" integrity="sha256-sw0iNNXmOJbQhYFuC9OF2kOlD5KQKe1y5lfBn4C9Sjg=" crossorigin="anonymous"></script>
 
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
         #progressContainer {
-            width: 100%;
+            width: 80%;
             background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px;
         }
 
         #progressbar {
             width: 0%;
-            height: 10px;
-            background-color: #000;
+            height: 20px;
+            background-color: #4caf50;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button#battle {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        button#stopbattle {
+            background-color: #f44336;
+            color: white;
+        }
+
+        button#heal {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        button#increasestr, button#increasedef, button#resetstats, button#unequipitems {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        button#inventory, button#shop {
+            background-color: #9c27b0;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .stat, .monster-stat {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+        }
+
+        #inventorydialog, #shopdialog {
+            display: none;
+        }
+
+        .dialog p {
+            font-weight: bold;
+        }
+
+        .dialog button {
+            display: block;
+            margin: 5px 0;
+            width: 100%;
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .dialog button:hover {
+            background-color: #1976D2;
         }
     </style>
 
     <script>
-        $( function() {
+        $(function () {
             $("#inventorydialog").dialog({
                 autoOpen: false,
             });
-        } );
-        $( function() {
             $("#shopdialog").dialog({
                 autoOpen: false,
             });
-        } );
+        });
     </script>
 </head>
-
 <body>
     <div id="progressContainer">
-    <div id="progressbar"></div>
+        <div id="progressbar"></div>
     </div>
 
-    <button id="battle">BATTLE</button>
-    <button id="stopbattle">STOP BATTLE</button>
-    <button id="heal">HEAL</button>
-    <button id="increasestr">INCREASE STRENGTH</button>
-    <button id="increasedef">INCREASE DEFENCE</button>
-    <button id="inventory">INVENTORY</button>
-    <button id="shop">SHOP</button>
+    <div>
+        <button id="battle">BATTLE</button>
+        <button id="stopbattle">STOP BATTLE</button>
+        <button id="heal">HEAL</button>
+        <button id="increasestr">INCREASE STRENGTH</button>
+        <button id="increasedef">INCREASE DEFENCE</button>
+        <button id="resetstats">RESET STATS</button>
+        <button id="unequipitems">UNEQUIP ALL ITEMS</button>
+        <button id="inventory">INVENTORY</button>
+        <button id="shop">SHOP</button>
+    </div>
 
-    <p id="level">LEVEL: 1</p>
-    <p id="exp">EXP: 0/10</p>
-    <p id="hp">HP: 10/10</p>
-    <p id="str">STR: 0</p>
-    <p id="def">DEF: 0</p>
-    <p id="points">POINTS: 0</p>
-    <p id="coins">COINS: 0</p>
-    <br>
-    <button id="resetstats">RESET STATS</button>
-    <button id="unequipitems">UNEQUIP ALL ITEMS</button>
+    <div>
+        <p id="level" class="stat">LEVEL: 1</p>
+        <p id="exp" class="stat">EXP: 0/10</p>
+        <p id="hp" class="stat">HP: 10/10</p>
+        <p id="str" class="stat">STR: 0</p>
+        <p id="def" class="stat">DEF: 0</p>
+        <p id="points" class="stat">POINTS: 0</p>
+        <p id="coins" class="stat">COINS: 0</p>
+    </div>
 
-    <br>
-    <br>
+    <div>
+        <h1>Monster</h1>
+        <select id="monsters">
+            <option value="default" id="default">Select A Monster</option>
+            <option value="m1">Monster1</option>
+            <option value="m2">Monster2</option>
+            <option value="m3">Monster3</option>
+            <option value="m4">Monster4</option>
+            <option value="m5">Testing Monster</option>
+        </select>
+        <p id="monsterhp" class="monster-stat">HP: 0/0</p>
+        <p id="monsteratk" class="monster-stat">ATK: 0</p>
+        <p id="monsterdef" class="monster-stat">DEF: 0</p>
+        <p id="monsterexpreward" class="monster-stat">EXP REWARD: 0</p>
+        <p id="monstercoinreward" class="monster-stat">COIN REWARD: 0</p>
+    </div>
 
-    <h1>Monster</h1>
-
-
-    <select id="monsters">
-        <option value="default" id="default">Select A Monster</option>
-        <option value="m1">Monster1</option>
-        <option value="m2">Monster2</option>
-        <option value="m3">Monster3</option>
-        <option value="m4">Monster4</option>
-        <option value="m5">Testing Monster</option>
-    </select>
-
-
-    <p id="monsterhp">HP: 0/0</p>
-    <p id="monsteratk">ATK: 0</p>
-    <p id="monsterdef">DEF: 0</p>
-    <p id="monsterexpreward">EXP REWARD: 0</p>
-    <p id="monstercoinreward">COIN REWARD: 0</p>
-
-    <div id="inventorydialog">
+    <div id="inventorydialog" class="dialog">
         <p>Inventory</p>
         <button id="item1equip" style="display: none;">Equip Basic Sword</button>
         <button id="item2equip" style="display: none;">Equip Basic Shield</button>
@@ -92,7 +178,7 @@
         <button id="item7equip" style="display: none;">Equip Slightly Better Armor</button>
     </div>
 
-    <div id="shopdialog">
+    <div id="shopdialog" class="dialog">
         <p>Shop</p>
         <button id="item1">Buy Basic Sword</button>
         <button id="item2">Buy Basic Shield</button>
@@ -102,5 +188,5 @@
         <button id="item6">Buy Slightly Better Shield</button>
         <button id="item7">Buy Slightly Better Armor</button>
     </div>
-
 </body>
+</html>
