@@ -8,11 +8,11 @@ $(document).ready(function () {
         exp: 0,
         str: 0,
         def: 0,
-        hp: 10,
-        maxhp: 10,
+        hp: 100,
+        maxhp: 100,
         expnext: 10,
         level: 1,
-        points: 2,
+        points: 20,
         coins: 0,
     };
 
@@ -35,52 +35,55 @@ $(document).ready(function () {
             coinreward: 0,
         },
         m1: {
-            str: 1,
+            str: 10,
             def: 0,
-            hp: 5,
+            hp: 50,
             expreward: 1,
-            maxhp: 5,
-            coinreward: 1,
+            maxhp: 50,
+            coinreward: 10,
         },
         m2: {
-            str: 2,
-            def: 2,
-            hp: 10,
+            str: 20,
+            def: 20,
+            hp: 100,
             expreward: 2,
-            maxhp: 10,
-            coinreward: 2,
+            maxhp: 100,
+            coinreward: 20,
         },
         m3: {
-            str: 5,
-            def: 4,
-            hp: 20,
+            str: 50,
+            def: 40,
+            hp: 200,
             expreward: 5,
-            maxhp: 20,
-            coinreward: 5,
+            maxhp: 200,
+            coinreward: 50,
         },
         m4: {
-            str: 10,
-            def: 8,
-            hp: 35,
+            str: 100,
+            def: 80,
+            hp: 350,
             expreward: 10,
-            maxhp: 35,
-            coinreward: 10,
+            maxhp: 350,
+            coinreward: 100,
         },
         m5: {
             str: 0,
             def: 0,
             hp: 1,
-            expreward: 1000,
+            expreward: 10000,
             maxhp: 1,
-            coinreward: 1000,
+            coinreward: 10000,
         },
     }
 
     let items = [
-        { id: "item1", cost: 0, quantity: 0, equip: 0, strength: 1, defence: 1, type: "sword" },
-        { id: "item2", cost: 0, quantity: 0, equip: 0, strength: 2, defence: 2, type: "shield" },
-        { id: "item3", cost: 0, quantity: 0, equip: 0, strength: 3, defence: 3, type: "armor" },
+        { id: "item1", cost: 0, quantity: 0, equip: 0, strength: 50, defence: 0, type: "sword" },
+        { id: "item2", cost: 0, quantity: 0, equip: 0, strength: 0, defence: 30, type: "shield" },
+        { id: "item3", cost: 0, quantity: 0, equip: 0, strength: 0, defence: 50, type: "armor" },
         { id: "item4", cost: 0, quantity: 0, equip: 0, strength: 1000, defence: 1000, type: "sword" },
+        { id: "item5", cost: 0, quantity: 0, equip: 0, strength: 100, defence: 0, type: "sword" },
+        { id: "item6", cost: 0, quantity: 0, equip: 0, strength: 0, defence: 100, type: "shield" },
+        { id: "item7", cost: 0, quantity: 0, equip: 0, strength: 0, defence: 200, type: "armor" },
     ]
 
     let currentlyEquippedItems = {
@@ -173,6 +176,37 @@ $(document).ready(function () {
         $("#shopdialog").dialog("open");
     })
 
+    $("#resetstats").on("click", function() {
+        let equippedItems = Object.values(currentlyEquippedItems).filter(item => item !== null);
+        if (state.str > 0 || state.def > 0) {
+            if (equippedItems.length === 0) {
+                state.points += state.str + state.def;
+                state.str = 0;
+                state.def = 0;
+            } else {
+                alert("Unequip First!");
+                return;
+            }
+        } else {
+            alert("Nothing To Reset!");
+            return;
+        }
+        Update();
+    });
+
+    $("#unequipitems").on("click", function UnequipAllItems() {
+        Object.keys(currentlyEquippedItems).forEach(function(type) {
+            let item = currentlyEquippedItems[type];
+            if (item) {
+                state.str -= item.strength;
+                state.def -= item.defence;
+                item.equip = 0;
+                currentlyEquippedItems[type] = null;
+            }
+        });
+        Update();
+    });
+ 
 
     //Buy Items
     items.forEach(function(item, index) {
@@ -192,7 +226,7 @@ $(document).ready(function () {
     });
 
 
-    //Equip Items (Needs Work)
+    //Equip Items
     items.forEach(function(item, index) {
         $("#" + item.id + "equip").on("click", function() {
             if (item.quantity >= 1 && item.equip === 0) {
@@ -216,7 +250,10 @@ $(document).ready(function () {
     });
 
     function Update() {
-        $("#exp").html("EXP: " + state.exp + "/" + state.expnext);
+        var experience = state.exp.toFixed(0);
+        var experiencenext = state.expnext.toFixed(0);
+        var coins = state.coins.toFixed(2);
+        $("#exp").html("EXP: " + experience + "/" + experiencenext);
         $("#hp").html("HP: " + state.hp + "/" + state.maxhp);
         $("#str").html("STR: " + state.str);
         $("#def").html("DEF: " + state.def);
@@ -224,9 +261,10 @@ $(document).ready(function () {
         $("#points").html("POINTS: " + state.points);
         $("#monsteratk").html("ATK: " + monstertest.str);
         $("#monsterdef").html("DEF: " + monstertest.def);
-        $("#monsterexpreward").html("EXP REWARD: " + monstertest.expreward)
+        $("#monsterexpreward").html("EXP REWARD: " + monstertest.expreward);
+        $("#monstercoinreward").html("COIN REWARD: " + monstertest.coinreward);
         $("#level").html("LEVEL: " + state.level);
-        $("#coins").html("COINS: " + state.coins);
+        $("#coins").html("COINS: " + coins);
         if (state.exp >= state.expnext) {
             LevelUp();
         }
@@ -285,9 +323,9 @@ $(document).ready(function () {
     function LevelUp () {
         if (state.exp >= state.expnext) {
             state.exp -= state.expnext;
-            state.points += 2;
-            state.maxhp += 5;
-            state.expnext *= 2;
+            state.points += 20;
+            state.maxhp += 50;
+            state.expnext *= 1.2;
             state.level += 1;
             state.hp = state.maxhp;
             Update();
