@@ -268,6 +268,7 @@ $(document).ready(function () {
         if (state.exp >= state.expnext) {
             LevelUp();
         }
+        saveState(state);
     };
 
     function Battle() {
