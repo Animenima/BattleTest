@@ -119,6 +119,7 @@ $(document).ready(function () {
 
     $("#stopbattle").click(function () {
         StopBattle();
+        Update();
     })
 
     function StopBattle () {
@@ -136,11 +137,10 @@ $(document).ready(function () {
         if (state.coins >= state.maxhp * 0.5) {
             state.hp = state.maxhp;
             state.coins -= state.maxhp * 0.5;
-            Update();
         } else {
             alert("Not Enough Coins!");
-            Update();
         }
+        Update();
     }
     })
 
@@ -148,24 +148,22 @@ $(document).ready(function () {
         if (state.points > 0) {
             state.str += 1;
             state.points -= 1;
-            Update();
         }
         else {
-            return "Not Enough Points";
-            Update();
+            alert("Not Enough Points");
         }
+        Update();
     })
 
     $("#increasedef").click(function () {
         if (state.points > 0) {
             state.def += 1;
             state.points -= 1;
-            Update();
         }
         else {
             return "Not Enough Points";
-            Update();
         }
+        Update();
     })
 
     $("#inventory").click(function (){
@@ -217,12 +215,11 @@ $(document).ready(function () {
                 if (item.quantity >= 1) {
                     $("#" + item.id + "equip").css("display", "block");
                 }
-                Update();
             } else {
                 alert("Not Enough Coins!");
-                Update();
             }
         });
+        Update();
     });
 
 
@@ -241,12 +238,11 @@ $(document).ready(function () {
                 state.str += item.strength;
                 state.def += item.defence;
                 currentlyEquippedItems[item.type] = item;
-                Update();
             } else if (item.equip === 1) {
                 alert("Already Equipped!");
-                Update();
             }
         });
+        Update();
     });
 
     function Update() {
@@ -282,27 +278,22 @@ $(document).ready(function () {
         if (monstertest.hp > 0) {
             if (monstertest.def < state.str) {
                 monstertest.hp -= (state.str - monstertest.def)
-                Update();
             }
             else {
                 NoDamage();
-                Update();
             };
 
             if (state.def < monstertest.str) {
                 state.hp -= (monstertest.str - state.def);
-                Update();
             }
             else {
                 NoDamage();
-                Update();
             }
             if (monstertest.hp <= 0) {
                 monstertest.hp = 0;
                 state.exp += monstertest.expreward;
                 monstertest.hp = monstertest.maxhp;
                 state.coins += monstertest.coinreward;
-                Update();
             }
         }
 
@@ -312,13 +303,12 @@ $(document).ready(function () {
             state.hp = state.maxhp;
             clearInterval(IntervalID);
             IntervalID = null;
-            Update();
         }
         if (state.exp <= 0) {
             state.exp = 0;
-            Update();
         }
         }
+        Update();
     }
 
     function LevelUp () {
@@ -329,14 +319,12 @@ $(document).ready(function () {
             state.expnext *= 1.2;
             state.level += 1;
             state.hp = state.maxhp;
-            Update();
         }
-        else {
-            Update();
-        }
+        Update();
     }
 
     function NoDamage() {
-        return "No Damage";
+        alert("No Damage");
+        Update();
     }
 });
